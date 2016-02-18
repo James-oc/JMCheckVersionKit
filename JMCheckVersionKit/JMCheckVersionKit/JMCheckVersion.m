@@ -149,14 +149,9 @@ static JMCheckVersion *_sharedInstance;
  */
 -(NSInteger) daysSinceLastVersionCheckDate
 {
-    NSCalendar *gregorian;
-    if (IS_IOS8) {
-        gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    }else {
-        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    }
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
-    NSDateComponents *components = [gregorian components:NSCalendarUnitDay fromDate:_lastVersionCheckPerformedOnDate toDate:[NSDate date] options:0];
+    NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:_lastVersionCheckPerformedOnDate toDate:[NSDate date] options:0];
     
     return components.day;
 }
