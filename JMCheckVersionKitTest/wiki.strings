@@ -1,0 +1,10 @@
+/* 
+  wiki.strings
+  JMCheckVersionKitTest
+
+  Created by james on 15/2/11.
+  Copyright (c) 2015年 james. All rights reserved.
+*/
+
+//1. 生成Framework，将资源JMCheckVersion.budle拉入项目
+//2.根据delegate调用示例调用
