@@ -39,6 +39,12 @@
     tool.forceLanguageLocalization = Default;
     [tool checkVersion:JMCheckVersionTypeWithImmediately];
     
+    // 自定义
+//    [JMCheckVersion sharedInstace].alertType = JMCheckVersionAlertTypeWithNone;
+//    [JMCheckVersion sharedInstace].didDetectNewVersionWithoutAlert = ^(NSString *newMessage) {
+//        NSLog(@"%@",newMessage);
+//    };
+    
 //    NSLog(@"%@",    [NSBundle allFrameworks]);
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
