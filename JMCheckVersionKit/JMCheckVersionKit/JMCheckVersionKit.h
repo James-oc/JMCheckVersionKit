@@ -14,7 +14,5 @@ FOUNDATION_EXPORT double JMCheckVersionKitVersionNumber;
 //! Project version string for JMCheckVersionKit.
 FOUNDATION_EXPORT const unsigned char JMCheckVersionKitVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <JMCheckVersionKit/PublicHeader.h>
-
 #import "JMCheckVersion.h"
 

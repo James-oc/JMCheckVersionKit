@@ -50,6 +50,7 @@ static JMCheckVersion *_sharedInstance;
     return self;
 }
 
+#pragma mark - Check Version
 -(void) checkVersion:(JMCheckVersionType) checkType
 {
     if (_appId == nil) {
@@ -64,7 +65,6 @@ static JMCheckVersion *_sharedInstance;
         if (checkType == JMCheckVersionTypeWithImmediately) {
             [self performVersionCheck];
         }else {
-//            NSLog(@"%ld",(long)[self daysSinceLastVersionCheckDate]);
             if (_lastVersionCheckPerformedOnDate != nil && ![_lastVersionCheckPerformedOnDate isEqual:@""]) {
                 if ([self daysSinceLastVersionCheckDate] >= checkType) {
                     [self performVersionCheck];
@@ -76,18 +76,14 @@ static JMCheckVersion *_sharedInstance;
     }
 }
 
-/**
- *@description check version
- *@return void
- */
 -(void) performVersionCheck
 {
-    // 发出请求
+    // send Request
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[self iTunesURLFromString]];
     [request setHTTPMethod:@"POST"];
     
-    // 接受数据
+    // receive data
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
         if (data != nil) {
             if (data.length > 0) {
@@ -114,7 +110,7 @@ static JMCheckVersion *_sharedInstance;
     [self storeVersionCheckDate];
     
     NSError *error = nil;
-    // 解析数据
+    // parsing data
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:recervedData
                                                         options:NSJSONReadingMutableLeaves
                                                           error:&error];
@@ -140,155 +136,6 @@ static JMCheckVersion *_sharedInstance;
             NSLog(@"[JMCheckVersion] Error retrieving App Store verson number as results returns an empty NSArray");
         }
     }
-
-}
-
-/**
- *@description Number of days difference
- *@return NSInteger
- */
--(NSInteger) daysSinceLastVersionCheckDate
-{
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    
-    NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:_lastVersionCheckPerformedOnDate toDate:[NSDate date] options:0];
-    
-    return components.day;
-}
-
-/**
- *@description set check version date
- *@return void
- */
--(void) storeVersionCheckDate {
-    _lastVersionCheckPerformedOnDate = [NSDate date];
-    [[NSUserDefaults standardUserDefaults] setObject:_lastVersionCheckPerformedOnDate forKey:DefaultStoredVersionCheckDate];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-/**
- *@description get app store link
- *@return NSURL
- */
--(NSURL *) iTunesURLFromString
-{
-    NSString *storeURLString = Store_URL(_appId);
-    
-    if (_countryCode) {
-        [storeURLString stringByAppendingString:[NSString stringWithFormat:@"&country=%@",_countryCode]];
-    }
-    
-    if (_debugEnabled) {
-        NSLog(@"[JMCheckVersion] iTunes Lookup URL: %@",storeURLString);
-    }
-    
-    return [NSURL URLWithString:storeURLString];
-}
-
-/**
- *@description User Decided To Skip Version Update
- *@return void
- */
--(void) showAlertIfCurrentAppStoreVersionNotSkipped
-{
-    NSString *previouslySkippedVersion = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultSkippedVersion];
-    
-    if (previouslySkippedVersion != nil && ![previouslySkippedVersion isEqualToString:@""]) {
-        if (![previouslySkippedVersion isEqualToString:_currentAppStoreVersion]) {
-            [self showAlert];
-        }
-    }else {
-        [self showAlert];
-    }
-}
-
-/**
- *@description alert view
- *@return void
- */
--(void) showAlert
-{
-    NSString *updateAvailableMessage;
-    
-    if (_availableMessageTitle != nil || [_availableMessageTitle isEqualToString:@""]) {
-        updateAvailableMessage = [self localizedString:_availableMessageTitle withJMLanguageTypeString:_languageTypeString];
-    }else {
-        updateAvailableMessage = [self localizedString:@"Update Available" withJMLanguageTypeString:_languageTypeString];
-    }
-
-    NSString *newVersionMessage = [self localizedNewVersionMessage];
-    
-    if (IS_IOS8) {
-        // IOS 8
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:updateAvailableMessage
-                                                                                 message:newVersionMessage
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        switch (_alertType) {
-            case JMCheckVersionAlertTypeWithForce:
-                [alertController addAction:[self updateAlertAction]];
-                break;
-            case JMCheckVersionAlertTypeWithOption:
-                [alertController addAction:[self nextTimeAlertAction]];
-                [alertController addAction:[self updateAlertAction]];
-                break;
-            case JMCheckVersionAlertTypeWithSkip:
-                [alertController addAction:[self nextTimeAlertAction]];
-                [alertController addAction:[self updateAlertAction]];
-                [alertController addAction:[self skipAlertAction]];
-                break;
-            case JMCheckVersionAlertTypeWithNone:
-                if (_debugEnabled) {
-                    NSLog(@"[JMCheckVersion] No alert presented due to alertType == JMCheckVersionAlertTypeWithNone");
-                }
-                break;
-            default:
-                break;
-        }
-        
-        if (_alertType != JMCheckVersionAlertTypeWithNone) {
-            [_presentingViewController presentViewController:alertController animated:YES completion:nil];
-        }
-    }else {
-        // IOS 7
-        UIAlertView *alertView;
-        switch (_alertType) {
-            case JMCheckVersionAlertTypeWithForce:
-                alertView = [[UIAlertView alloc] initWithTitle:updateAvailableMessage
-                                                                message:newVersionMessage
-                                                                delegate:self
-                                                        cancelButtonTitle:[self localizedUpdateButtonTitle]
-                                                        otherButtonTitles:nil];
-                break;
-            case JMCheckVersionAlertTypeWithOption:
-                alertView = [[UIAlertView alloc] initWithTitle:updateAvailableMessage
-                                                       message:newVersionMessage
-                                                      delegate:self
-                                             cancelButtonTitle:[self localizedNextTimeButtonTitle]
-                                             otherButtonTitles:nil];
-                [alertView addButtonWithTitle:[self localizedUpdateButtonTitle]];
-                break;
-            case JMCheckVersionAlertTypeWithSkip:
-                alertView = [[UIAlertView alloc] initWithTitle:updateAvailableMessage
-                                                       message:newVersionMessage
-                                                      delegate:self
-                                             cancelButtonTitle:[self localizedSkipButtonTitle]
-                                             otherButtonTitles:nil];
-                [alertView addButtonWithTitle:[self localizedUpdateButtonTitle]];
-                [alertView addButtonWithTitle:[self localizedNextTimeButtonTitle]];
-                break;
-            case JMCheckVersionAlertTypeWithNone:
-                if (_debugEnabled) {
-                    NSLog(@"[JMCheckVersion] No alert presented due to alertType == JMCheckVersionAlertTypeWithNone");
-                }
-                break;
-            default:
-                break;
-        }
-        
-        if (alertView) {
-            [alertView show];
-        }
-    }
 }
 
 #pragma mark - Language Type
@@ -311,11 +158,11 @@ static JMCheckVersion *_sharedInstance;
             NSArray *languages = [def valueForKey:@"AppleLanguages"];
             
             if(languages != nil && languages.count != 0){
-                //获取系统当前语言版本(中文zh-Hans,英文en)
+                // Get the current system language version (Chinese:zh-Hans,English:en)
                 NSString *current = [languages objectAtIndex:0];
                 
                 if (_debugEnabled) {
-                    NSLog(@"当前语言:%@",current);
+                    NSLog(@"The current language:%@",current);
                 }
                 
                 if ([current hasPrefix:@"zh"]) {
@@ -458,7 +305,118 @@ static JMCheckVersion *_sharedInstance;
 }
 
 #pragma mark - UIAlertAction
-// Actions
+/**
+ *@description User Decided To Skip Version Update
+ *@return void
+ */
+-(void) showAlertIfCurrentAppStoreVersionNotSkipped
+{
+    NSString *previouslySkippedVersion = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultSkippedVersion];
+    
+    if (previouslySkippedVersion != nil && ![previouslySkippedVersion isEqualToString:@""]) {
+        if (![previouslySkippedVersion isEqualToString:_currentAppStoreVersion]) {
+            [self showAlert];
+        }
+    }else {
+        [self showAlert];
+    }
+}
+
+/**
+ *@description alert view
+ *@return void
+ */
+-(void) showAlert
+{
+    NSString *updateAvailableMessage;
+    
+    if (_availableMessageTitle != nil || [_availableMessageTitle isEqualToString:@""]) {
+        updateAvailableMessage = [self localizedString:_availableMessageTitle withJMLanguageTypeString:_languageTypeString];
+    }else {
+        updateAvailableMessage = [self localizedString:@"Update Available" withJMLanguageTypeString:_languageTypeString];
+    }
+    
+    NSString *newVersionMessage = [self localizedNewVersionMessage];
+    
+    if (IS_IOS8) {
+        // IOS 8
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:updateAvailableMessage
+                                                                                 message:newVersionMessage
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        switch (_alertType) {
+            case JMCheckVersionAlertTypeWithForce:
+                [alertController addAction:[self updateAlertAction]];
+                break;
+            case JMCheckVersionAlertTypeWithOption:
+                [alertController addAction:[self nextTimeAlertAction]];
+                [alertController addAction:[self updateAlertAction]];
+                break;
+            case JMCheckVersionAlertTypeWithSkip:
+                [alertController addAction:[self nextTimeAlertAction]];
+                [alertController addAction:[self updateAlertAction]];
+                [alertController addAction:[self skipAlertAction]];
+                break;
+            case JMCheckVersionAlertTypeWithNone:
+                if (_debugEnabled) {
+                    NSLog(@"[JMCheckVersion] No alert presented due to alertType == JMCheckVersionAlertTypeWithNone");
+                    if (_didDetectNewVersionWithoutAlert != nil) {
+                        _didDetectNewVersionWithoutAlert(newVersionMessage);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        
+        if (_alertType != JMCheckVersionAlertTypeWithNone) {
+            [_presentingViewController presentViewController:alertController animated:YES completion:nil];
+        }
+    }else {
+        // IOS 7
+        UIAlertView *alertView;
+        switch (_alertType) {
+            case JMCheckVersionAlertTypeWithForce:
+                alertView = [[UIAlertView alloc] initWithTitle:updateAvailableMessage
+                                                       message:newVersionMessage
+                                                      delegate:self
+                                             cancelButtonTitle:[self localizedUpdateButtonTitle]
+                                             otherButtonTitles:nil];
+                break;
+            case JMCheckVersionAlertTypeWithOption:
+                alertView = [[UIAlertView alloc] initWithTitle:updateAvailableMessage
+                                                       message:newVersionMessage
+                                                      delegate:self
+                                             cancelButtonTitle:[self localizedNextTimeButtonTitle]
+                                             otherButtonTitles:nil];
+                [alertView addButtonWithTitle:[self localizedUpdateButtonTitle]];
+                break;
+            case JMCheckVersionAlertTypeWithSkip:
+                alertView = [[UIAlertView alloc] initWithTitle:updateAvailableMessage
+                                                       message:newVersionMessage
+                                                      delegate:self
+                                             cancelButtonTitle:[self localizedSkipButtonTitle]
+                                             otherButtonTitles:nil];
+                [alertView addButtonWithTitle:[self localizedUpdateButtonTitle]];
+                [alertView addButtonWithTitle:[self localizedNextTimeButtonTitle]];
+                break;
+            case JMCheckVersionAlertTypeWithNone:
+                if (_debugEnabled) {
+                    NSLog(@"[JMCheckVersion] No alert presented due to alertType == JMCheckVersionAlertTypeWithNone");
+                    if (_didDetectNewVersionWithoutAlert != nil) {
+                        _didDetectNewVersionWithoutAlert(newVersionMessage);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        
+        if (alertView) {
+            [alertView show];
+        }
+    }
+}
+
 -(void) launchAppStore {
     NSString *iTunesString = _updateURL ? :Store_URL(_appId);
     NSURL *iTunesURL = [NSURL URLWithString:iTunesString];
@@ -490,7 +448,6 @@ static JMCheckVersion *_sharedInstance;
     return action;
 }
 
-#pragma mark - UIAlertAction Delegate
 -(UIAlertAction *) skipAlertAction
 {
     NSString *title = [self localizedSkipButtonTitle];
@@ -505,6 +462,50 @@ static JMCheckVersion *_sharedInstance;
     return action;
 }
 
+#pragma mark - Utils
+/**
+ *@description Number of days difference
+ *@return NSInteger
+ */
+-(NSInteger) daysSinceLastVersionCheckDate
+{
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    
+    NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:_lastVersionCheckPerformedOnDate toDate:[NSDate date] options:0];
+    
+    return components.day;
+}
+
+/**
+ *@description set check version date
+ *@return void
+ */
+-(void) storeVersionCheckDate {
+    _lastVersionCheckPerformedOnDate = [NSDate date];
+    [[NSUserDefaults standardUserDefaults] setObject:_lastVersionCheckPerformedOnDate forKey:DefaultStoredVersionCheckDate];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+/**
+ *@description get app store link
+ *@return NSURL
+ */
+-(NSURL *) iTunesURLFromString
+{
+    NSString *storeURLString = Store_URL(_appId);
+    
+    if (_countryCode) {
+        [storeURLString stringByAppendingString:[NSString stringWithFormat:@"&country=%@",_countryCode]];
+    }
+    
+    if (_debugEnabled) {
+        NSLog(@"[JMCheckVersion] iTunes Lookup URL: %@",storeURLString);
+    }
+    
+    return [NSURL URLWithString:storeURLString];
+}
+
+#pragma mark - UIAlertAction Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (_alertType) {

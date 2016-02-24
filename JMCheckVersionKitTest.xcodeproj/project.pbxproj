@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A4D0CEE1C7D4F5000D5DCA8 /* JMCheckVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1A4D0CED1C7D4F5000D5DCA8 /* JMCheckVersion.bundle */; };
 		1A9DABE81A8B33E700C9E5F0 /* JMCheckVersionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ADDB5441A89D3C30007BFAC /* JMCheckVersionKit.framework */; };
 		1A9DABFC1A8B42EB00C9E5F0 /* wiki.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A9DABFB1A8B42EB00C9E5F0 /* wiki.strings */; };
 		1ADDB51C1A89D3A00007BFAC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDB51B1A89D3A00007BFAC /* main.m */; };
@@ -15,7 +16,6 @@
 		1ADDB5251A89D3A00007BFAC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ADDB5231A89D3A00007BFAC /* Main.storyboard */; };
 		1ADDB5271A89D3A00007BFAC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ADDB5261A89D3A00007BFAC /* Images.xcassets */; };
 		1ADDB52A1A89D3A00007BFAC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1ADDB5281A89D3A00007BFAC /* LaunchScreen.xib */; };
-		1AF14B091C755BEF0072D3B4 /* JMCheckVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1AF14B081C755BEF0072D3B4 /* JMCheckVersion.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A4D0CED1C7D4F5000D5DCA8 /* JMCheckVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JMCheckVersion.bundle; sourceTree = "<group>"; };
 		1A9DABFB1A8B42EB00C9E5F0 /* wiki.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = wiki.strings; sourceTree = "<group>"; };
 		1ADDB5161A89D3A00007BFAC /* JMCheckVersionKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JMCheckVersionKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ADDB51A1A89D3A00007BFAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -43,7 +44,6 @@
 		1ADDB5341A89D3A00007BFAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1ADDB5351A89D3A00007BFAC /* JMCheckVersionKitTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JMCheckVersionKitTestTests.m; sourceTree = "<group>"; };
 		1ADDB53F1A89D3C30007BFAC /* JMCheckVersionKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JMCheckVersionKit.xcodeproj; path = JMCheckVersionKit/JMCheckVersionKit.xcodeproj; sourceTree = "<group>"; };
-		1AF14B081C755BEF0072D3B4 /* JMCheckVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = JMCheckVersion.bundle; path = ../JMCheckVersionKit/JMCheckVersionKit/JMCheckVersion.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +95,7 @@
 				1ADDB5231A89D3A00007BFAC /* Main.storyboard */,
 				1ADDB5261A89D3A00007BFAC /* Images.xcassets */,
 				1ADDB5281A89D3A00007BFAC /* LaunchScreen.xib */,
-				1AF14B081C755BEF0072D3B4 /* JMCheckVersion.bundle */,
+				1A4D0CED1C7D4F5000D5DCA8 /* JMCheckVersion.bundle */,
 				1ADDB5191A89D3A00007BFAC /* Supporting Files */,
 			);
 			path = JMCheckVersionKitTest;
@@ -209,10 +209,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1ADDB5251A89D3A00007BFAC /* Main.storyboard in Resources */,
+				1A4D0CEE1C7D4F5000D5DCA8 /* JMCheckVersion.bundle in Resources */,
 				1A9DABFC1A8B42EB00C9E5F0 /* wiki.strings in Resources */,
 				1ADDB52A1A89D3A00007BFAC /* LaunchScreen.xib in Resources */,
 				1ADDB5271A89D3A00007BFAC /* Images.xcassets in Resources */,
-				1AF14B091C755BEF0072D3B4 /* JMCheckVersion.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,7 +24,6 @@
 		1A50717F1A89CC8300253F85 /* JMCheckVersionKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A50717E1A89CC8300253F85 /* JMCheckVersionKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A5071D31A89CE4100253F85 /* JMCheckVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5071CF1A89CD5A00253F85 /* JMCheckVersion.m */; };
 		1A5071D41A89CE4300253F85 /* JMCheckVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A5071CE1A89CD5A00253F85 /* JMCheckVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1AF14B071C755BA20072D3B4 /* JMCheckVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1AF14B061C755BA20072D3B4 /* JMCheckVersion.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +32,6 @@
 		1A50717E1A89CC8300253F85 /* JMCheckVersionKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JMCheckVersionKit.h; sourceTree = "<group>"; };
 		1A5071CE1A89CD5A00253F85 /* JMCheckVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMCheckVersion.h; sourceTree = "<group>"; };
 		1A5071CF1A89CD5A00253F85 /* JMCheckVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMCheckVersion.m; sourceTree = "<group>"; };
-		1AF14B061C755BA20072D3B4 /* JMCheckVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JMCheckVersion.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +64,6 @@
 		1A50717B1A89CC8300253F85 /* JMCheckVersionKit */ = {
 			isa = PBXGroup;
 			children = (
-				1AF14B061C755BA20072D3B4 /* JMCheckVersion.bundle */,
 				1A50717E1A89CC8300253F85 /* JMCheckVersionKit.h */,
 				1A5071CE1A89CD5A00253F85 /* JMCheckVersion.h */,
 				1A5071CF1A89CD5A00253F85 /* JMCheckVersion.m */,
@@ -157,7 +154,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AF14B071C755BA20072D3B4 /* JMCheckVersion.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
