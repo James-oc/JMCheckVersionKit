@@ -17,8 +17,25 @@
 <img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Option.jpg?raw=true" height=480">
 <img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Skip.jpg?raw=true" height=480">
 
-## 设置
+## 安装
+1. 将项目中的JMCheckVersionKit文件夹以及JMCheckVersion.bundle拉入自己的工程项目里面。
+2. #import "JMCheckVersionKit.h"并开始代码编写。
 
+## 用CocoaPods安装
+CocoaPods是OSX和iOS下的一个第三类库管理工具,如果你还未安装请先查看[**CocoaPods安装和使用教程**](http://code4app.com/article/cocoapods-install-usage)
+
+## Podfile
+```OC
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '6.0'
+
+pod 'JMCheckVersionKit', '~> 1.0.0'
+```
+执行命令
+```OC
+$ pod install
+```
+## 代码
 以下是示例参考代码：
 
 ```OC
