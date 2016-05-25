@@ -51,12 +51,12 @@ typedef NS_ENUM(NSInteger, JMLanguageType) {
 /**
  *@description Initialization
  */
-+(instancetype) sharedInstace;
++ (instancetype)sharedInstace;
 
 /**
  *@description Check Version
  */
--(void) checkVersion:(JMCheckVersionType) checkType;
+- (void)checkVersion:(JMCheckVersionType)checkType;
 
 /**
  *@description The App Store / iTunes Connect ID for your app.

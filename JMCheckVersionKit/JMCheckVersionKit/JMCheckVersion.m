@@ -27,8 +27,7 @@ static JMCheckVersion *_sharedInstance;
 
 @implementation JMCheckVersion
 
-+(instancetype) sharedInstace
-{
++ (instancetype)sharedInstace {
     if (_sharedInstance == nil) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -39,8 +38,7 @@ static JMCheckVersion *_sharedInstance;
     return _sharedInstance;
 }
 
--(instancetype)init
-{
+- (instancetype)init {
     if (self = [super init]) {
         _lastVersionCheckPerformedOnDate = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultStoredVersionCheckDate];
         _debugEnabled = NO;
@@ -51,8 +49,7 @@ static JMCheckVersion *_sharedInstance;
 }
 
 #pragma mark - Check Version
--(void) checkVersion:(JMCheckVersionType) checkType
-{
+- (void) checkVersion:(JMCheckVersionType)checkType {
     if (_appId == nil) {
         if (_debugEnabled) {
             NSLog(@"[JMCheckVersion] Please make sure that you have set 'appID' before calling checkVersion.");
@@ -76,8 +73,7 @@ static JMCheckVersion *_sharedInstance;
     }
 }
 
--(void) performVersionCheck
-{
+- (void)performVersionCheck {
     // send Request
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[self iTunesURLFromString]];
@@ -105,8 +101,7 @@ static JMCheckVersion *_sharedInstance;
     }];
 }
 
--(void) processVersionCheckResults:(NSData *) recervedData
-{
+- (void)processVersionCheckResults:(NSData *)recervedData {
     [self storeVersionCheckDate];
     
     NSError *error = nil;
@@ -143,14 +138,12 @@ static JMCheckVersion *_sharedInstance;
  *@description set Language
  *@return void
  */
--(void)setForceLanguageLocalization:(JMLanguageType)forceLanguageLocalization
-{
+- (void)setForceLanguageLocalization:(JMLanguageType)forceLanguageLocalization {
     _forceLanguageLocalization = forceLanguageLocalization;
     [self getLanguageTypeString:_forceLanguageLocalization];
 }
 
--(void) getLanguageTypeString:(JMLanguageType) languageType
-{
+- (void)getLanguageTypeString:(JMLanguageType)languageType {
     switch (languageType) {
         case Default:
         {
@@ -235,11 +228,12 @@ static JMCheckVersion *_sharedInstance;
 }
 
 #pragma mark - NSBundle Extends
--(NSString *) getBundlePath{
-    return [[NSBundle mainBundle] pathForResource:@"JMCheckVersion" ofType:@"bundle"];
+- (NSString *)getBundlePath {
+    return [[NSBundle mainBundle] pathForResource:@"JMCheckVersion"
+                                           ofType:@"bundle"];
 }
 
--(NSString *) getForceBundlePath:(NSString *) languageTypeString{
+- (NSString *)getForceBundlePath:(NSString *)languageTypeString {
     return [[NSBundle bundleWithPath:[self getBundlePath]] pathForResource:languageTypeString ofType:@"lproj"];
 }
 
@@ -247,8 +241,7 @@ static JMCheckVersion *_sharedInstance;
  *@description language transfer
  *@return void
  */
--(NSString *) localizedString:(NSString *) stringKey withJMLanguageTypeString:(NSString *) languageTypeString
-{
+- (NSString *)localizedString:(NSString *)stringKey withJMLanguageTypeString:(NSString *)languageTypeString {
     NSString *path = nil;
     NSString *table = @"CheckVersionLocalizable";
     
@@ -262,8 +255,7 @@ static JMCheckVersion *_sharedInstance;
 }
 
 #pragma mark - Message Show
--(NSString *) localizedNewVersionMessage
-{
+- (NSString *)localizedNewVersionMessage {
     NSString *newVersionMessageToLocalize = @"A new version of %@ is available. Please update to version %@ now.";
     if (_versionMessage != nil || [_versionMessage isEqualToString:@""]) {
         newVersionMessageToLocalize = _versionMessage;
@@ -274,8 +266,7 @@ static JMCheckVersion *_sharedInstance;
     return newVersionMessage;
 }
 
--(NSString *) localizedUpdateButtonTitle
-{
+- (NSString *)localizedUpdateButtonTitle {
     NSString *title = @"Update";
     if (_updatingButtonTitle != nil && ![_updatingButtonTitle isEqualToString:@""]) {
         title = _updatingButtonTitle;
@@ -284,8 +275,7 @@ static JMCheckVersion *_sharedInstance;
     return [self localizedString:title withJMLanguageTypeString:_languageTypeString];
 }
 
--(NSString *) localizedNextTimeButtonTitle
-{
+- (NSString *)localizedNextTimeButtonTitle {
     NSString *title = @"Next time";
     if (_nextTimeButtonTitle != nil && ![_nextTimeButtonTitle isEqualToString:@""]) {
         title = _nextTimeButtonTitle;
@@ -294,8 +284,7 @@ static JMCheckVersion *_sharedInstance;
     return [self localizedString:title withJMLanguageTypeString:_languageTypeString];
 }
 
--(NSString *) localizedSkipButtonTitle
-{
+- (NSString *)localizedSkipButtonTitle {
     NSString *title = @"Skip this version";
     if (_skippingButtonTitle != nil && ![_skippingButtonTitle isEqualToString:@""]) {
         title = _skippingButtonTitle;
@@ -309,8 +298,7 @@ static JMCheckVersion *_sharedInstance;
  *@description User Decided To Skip Version Update
  *@return void
  */
--(void) showAlertIfCurrentAppStoreVersionNotSkipped
-{
+- (void)showAlertIfCurrentAppStoreVersionNotSkipped {
     NSString *previouslySkippedVersion = [[NSUserDefaults standardUserDefaults] objectForKey:DefaultSkippedVersion];
     
     if (previouslySkippedVersion != nil && ![previouslySkippedVersion isEqualToString:@""]) {
@@ -326,8 +314,7 @@ static JMCheckVersion *_sharedInstance;
  *@description alert view
  *@return void
  */
--(void) showAlert
-{
+- (void)showAlert {
     NSString *updateAvailableMessage;
     
     if (_availableMessageTitle != nil || [_availableMessageTitle isEqualToString:@""]) {
@@ -417,14 +404,13 @@ static JMCheckVersion *_sharedInstance;
     }
 }
 
--(void) launchAppStore {
+- (void)launchAppStore {
     NSString *iTunesString = _updateURL ? :Store_URL(_appId);
     NSURL *iTunesURL = [NSURL URLWithString:iTunesString];
     [[UIApplication sharedApplication] openURL:iTunesURL];
 }
 
--(UIAlertAction *) updateAlertAction
-{
+- (UIAlertAction *)updateAlertAction {
     NSString *title = [self localizedUpdateButtonTitle];
     UIAlertAction *action = [UIAlertAction actionWithTitle:title
                                                      style:UIAlertActionStyleDefault
@@ -436,8 +422,7 @@ static JMCheckVersion *_sharedInstance;
     return action;
 }
 
--(UIAlertAction *) nextTimeAlertAction
-{
+- (UIAlertAction *)nextTimeAlertAction {
     NSString *title = [self localizedNextTimeButtonTitle];
     UIAlertAction *action = [UIAlertAction actionWithTitle:title
                                                      style:UIAlertActionStyleDefault
@@ -448,8 +433,7 @@ static JMCheckVersion *_sharedInstance;
     return action;
 }
 
--(UIAlertAction *) skipAlertAction
-{
+- (UIAlertAction *)skipAlertAction {
     NSString *title = [self localizedSkipButtonTitle];
     UIAlertAction *action = [UIAlertAction actionWithTitle:title
                                                      style:UIAlertActionStyleDefault
@@ -467,8 +451,7 @@ static JMCheckVersion *_sharedInstance;
  *@description Number of days difference
  *@return NSInteger
  */
--(NSInteger) daysSinceLastVersionCheckDate
-{
+- (NSInteger)daysSinceLastVersionCheckDate {
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
     NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:_lastVersionCheckPerformedOnDate toDate:[NSDate date] options:0];
@@ -480,7 +463,7 @@ static JMCheckVersion *_sharedInstance;
  *@description set check version date
  *@return void
  */
--(void) storeVersionCheckDate {
+- (void)storeVersionCheckDate {
     _lastVersionCheckPerformedOnDate = [NSDate date];
     [[NSUserDefaults standardUserDefaults] setObject:_lastVersionCheckPerformedOnDate forKey:DefaultStoredVersionCheckDate];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -490,8 +473,7 @@ static JMCheckVersion *_sharedInstance;
  *@description get app store link
  *@return NSURL
  */
--(NSURL *) iTunesURLFromString
-{
+- (NSURL *)iTunesURLFromString {
     NSString *storeURLString = Store_URL(_appId);
     
     if (_countryCode) {
@@ -506,8 +488,7 @@ static JMCheckVersion *_sharedInstance;
 }
 
 #pragma mark - UIAlertAction Delegate
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (_alertType) {
         case JMCheckVersionAlertTypeWithForce:
             [self launchAppStore];
