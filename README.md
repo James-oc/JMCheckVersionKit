@@ -13,9 +13,9 @@
 - **中间截图** 给用户更新应用程序的选项。
 - **右边截图** 让用户可以选择跳过当前的更新。
 
-<img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Force.jpg?raw=true" height=480">
-<img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Option.jpg?raw=true" height=480">
-<img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Skip.jpg?raw=true" height=480">
+<img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Force.jpg?raw=true" height="480">
+<img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Option.jpg?raw=true" height="480">
+<img src="https://github.com/xiaobs/JMShareSource/raw/master/screenshots/OC/JMCheckVersionKit/IMG_Skip.jpg?raw=true" height="480">
 
 ## 安装
 1. 将项目中的JMCheckVersionKit文件夹以及JMCheckVersion.bundle拉入自己的工程项目里面。
